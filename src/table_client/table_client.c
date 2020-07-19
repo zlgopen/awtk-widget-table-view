@@ -445,7 +445,7 @@ static ret_t table_client_on_event(widget_t* widget, event_t* e) {
   switch (e->type) {
     case EVT_WINDOW_OPEN: {
       table_client_prepare_children(widget);
-      return RET_STOP;
+      return RET_OK;
     }
     case EVT_WHEEL: {
       wheel_event_t* evt = (wheel_event_t*)e;
