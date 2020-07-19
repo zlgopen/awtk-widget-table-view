@@ -49,8 +49,17 @@ scons
 > 默认使用动态库的形式，如果需要使用静态库，修改 SConstruct 文件中的 BUILD_SHARED = 'false' 即可。
 
 3. 运行
+
+* 基本示例
+
 ```
 ./bin/demo
+```
+
+* csv 文件查看和编辑
+
+```
+./bin/csv_view
 ```
 
 ## 文档
