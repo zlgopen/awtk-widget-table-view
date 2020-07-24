@@ -309,6 +309,22 @@
           }
         ],
         "annotation": {},
+        "desc": "确保子控件已经创建。",
+        "name": "table_client_ensure_children",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {},
         "desc": "数据变化时让table client重新加载数据。",
         "name": "table_client_reload",
         "return": {

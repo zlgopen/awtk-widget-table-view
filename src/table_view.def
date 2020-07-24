@@ -13,11 +13,12 @@ EXPORTS
     table_client_get_virtual_h @11
     table_client_scroll_to_row @12
     table_client_scroll_to_yoffset @13
-    table_client_reload @14
-    table_header_create @15
-    table_header_cast @16
-    table_row_create @17
-    table_row_cast @18
-    table_row_set_index @19
-    table_view_create @20
-    table_view_cast @21
+    table_client_ensure_children @14
+    table_client_reload @15
+    table_header_create @16
+    table_header_cast @17
+    table_row_create @18
+    table_row_cast @19
+    table_row_set_index @20
+    table_view_create @21
+    table_view_cast @22

@@ -203,6 +203,8 @@ static ret_t table_client_prepare_data(widget_t* widget) {
     nr = max_rows_to_load;
   }
 
+  nr = tk_min(nr, table_client->rows);
+
   for (i = 0; i < nr; i++) {
     uint32_t index = start_index + i;
     widget_t* iter = widget_get_child(widget, i);
