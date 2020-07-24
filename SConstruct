@@ -5,12 +5,14 @@ import shutil
 
 
 def getAwtkRoot():
-  #for pc
   awtk_root = '../awtk'
-  #for linux-fb
-  #awtk_root = '../awtk-linux-fb'
-  return os.path.abspath(awtk_root)
-
+  if not os.path.exists(awtk_root):
+    dirnames = ['../awtk', '../../awtk', '../../../awtk']
+    for dirname in dirnames:
+      if os.path.exists(dirname):
+        awtk_root = dirname
+        break
+  return awtk_root
 
 def isBuildShared():
   return 'WITH_AWTK_SO' in os.environ and os.environ['WITH_AWTK_SO'] == 'true' and BUILD_SHARED == 'true'
@@ -38,12 +40,26 @@ def copyAwtkDLL():
     shutil.copy(src, dst)
 
 
+def genIdlAndDef(awtk_root):
+  idl_gen_tools = os.path.join(awtk_root, 'tools/idl_gen/index.js')
+  dll_def_gen_tools = os.path.join(awtk_root, 'tools/dll_def_gen/index.js')
+
+  cmd = 'node ' + idl_gen_tools + ' idl/idl.json ' + 'src'
+  if os.system(cmd) != 0:
+    print('exe cmd: ' + cmd + ' failed.')
+
+  cmd = 'node ' + dll_def_gen_tools + ' idl/idl.json ' + 'src/table_view.def'
+  if os.system(cmd) != 0 :
+    print('exe cmd: ' + cmd + ' failed.')
+
+
 AWTK_ROOT = getAwtkRoot()
 sys.path.insert(0, AWTK_ROOT)
 import awtk_config as awtk
 
 
 BUILD_SHARED = 'true'
+GEN_IDL_DEF = 'true'
 LCD_WIDTH = '640'
 LCD_HEIGHT = '480'
 APP_DEFAULT_FONT = 'default'
@@ -79,6 +95,10 @@ if len(LANGUAGE) > 0:
 SHARED = ARGUMENTS.get('SHARED', '')
 if len(SHARED) > 0 and SHARED.lower().startswith('f'):
   BUILD_SHARED = 'false'
+
+IDL_DEF = ARGUMENTS.get('IDL_DEF', '')
+if len(IDL_DEF) > 0 and IDL_DEF.lower().startswith('f'):
+  GEN_IDL_DEF = 'false'
 
 APP_CPPPATH = []
 APP_CCFLAGS = ' -DLCD_WIDTH=' + LCD_WIDTH + ' -DLCD_HEIGHT=' + LCD_HEIGHT + ' ' 
@@ -123,6 +143,9 @@ if isBuildShared():
 
   if awtk.OS_NAME == 'Linux':
     APP_LINKFLAGS += ' -Wl,-rpath=' + APP_BIN_DIR + ' '
+
+if GEN_IDL_DEF == 'true':
+  genIdlAndDef(AWTK_ROOT)
 
 if hasattr(awtk, 'CC'):
   DefaultEnvironment(
