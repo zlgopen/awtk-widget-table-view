@@ -212,6 +212,7 @@ static ret_t table_client_prepare_data(widget_t* widget) {
     iter->y = index * row_height;
     table_row_set_index(iter, index);
     widget_set_visible(iter, TRUE, FALSE);
+    widget_set_enable(iter, TRUE);
 
     if (table_client->on_load_data != NULL) {
       table_client->on_load_data(table_client->on_load_data_ctx, index, iter);
@@ -221,6 +222,7 @@ static ret_t table_client_prepare_data(widget_t* widget) {
   for (; i < max_rows_to_load; i++) {
     widget_t* iter = widget_get_child(widget, i);
     widget_set_visible(iter, FALSE, FALSE);
+    widget_set_enable(iter, FALSE);
   }
 
   return RET_OK;
