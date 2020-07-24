@@ -68,9 +68,9 @@ ret_t table_client_set_rows(widget_t* widget, uint32_t rows) {
 
   if (widget_count_children(widget) < 2) {
     return RET_OK;
-  } 
-  
-  if(table_client->yoffset >= table_client_get_virtual_h(widget)) {
+  }
+
+  if (table_client->yoffset >= table_client_get_virtual_h(widget)) {
     int32_t yoffset = table_client_get_virtual_h(widget) - widget->h;
     table_client_set_yoffset(widget, yoffset);
   } else {
@@ -78,7 +78,6 @@ ret_t table_client_set_rows(widget_t* widget, uint32_t rows) {
     widget_dispatch_simple_event(widget, EVT_SCROLL);
     widget_invalidate_force(widget, NULL);
   }
-
 
   return RET_OK;
 }
@@ -229,7 +228,6 @@ ret_t table_client_reload(widget_t* widget) {
   return table_client_prepare_data(widget);
 }
 
-
 static ret_t table_client_on_scroll(widget_t* widget) {
   table_client_t* table_client = TABLE_CLIENT(widget);
   int32_t vstart_index = table_client_get_vstart_index(widget);
@@ -249,7 +247,7 @@ static ret_t table_client_on_scroll(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t table_client_prepare_children(widget_t* widget) {
+ret_t table_client_ensure_children(widget_t* widget) {
   xy_t iw = 0;
   xy_t ih = 0;
   uint32_t i = 0;
@@ -262,6 +260,10 @@ static ret_t table_client_prepare_children(widget_t* widget) {
   iw = widget->w;
   ih = table_client->row_height;
   nr = PAGES_TO_LOAD * rows_per_page;
+
+  if (nr <= widget_count_children(widget)) {
+    return RET_OK;
+  }
 
   for (i = 0; i < nr; i++) {
     ENSURE(widget_clone(twidget, widget) != NULL);
@@ -444,7 +446,7 @@ static ret_t table_client_on_event(widget_t* widget, event_t* e) {
   row_height = table_client->row_height;
   switch (e->type) {
     case EVT_WINDOW_OPEN: {
-      table_client_prepare_children(widget);
+      table_client_ensure_children(widget);
       return RET_OK;
     }
     case EVT_WHEEL: {
@@ -656,4 +658,3 @@ int64_t table_client_get_virtual_h(widget_t* widget) {
 
   return tk_max(virtual_h, widget->h);
 }
-

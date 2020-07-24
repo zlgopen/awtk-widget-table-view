@@ -27,11 +27,11 @@
 const char* s_table_header_properties[] = {NULL};
 
 TK_DECL_VTABLE(table_header) = {.size = sizeof(table_header_t),
-                             .type = WIDGET_TYPE_TABLE_HEADER,
-                             .clone_properties = s_table_header_properties,
-                             .persistent_properties = s_table_header_properties,
-                             .parent = TK_PARENT_VTABLE(widget),
-                             .create = table_header_create};
+                                .type = WIDGET_TYPE_TABLE_HEADER,
+                                .clone_properties = s_table_header_properties,
+                                .persistent_properties = s_table_header_properties,
+                                .parent = TK_PARENT_VTABLE(widget),
+                                .create = table_header_create};
 
 widget_t* table_header_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(table_header), x, y, w, h);

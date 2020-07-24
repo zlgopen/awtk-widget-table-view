@@ -116,7 +116,7 @@ typedef struct _table_client_t {
   /*用于加载数据的回调函数*/
   void* on_load_data_ctx;
   table_client_on_load_data_t on_load_data;
-  
+
   /*创建行时的回调函数，可以注册事件处理函数*/
   void* on_create_row_ctx;
   table_client_on_create_row_t on_create_row;
@@ -238,7 +238,7 @@ ret_t table_client_set_on_load_data(widget_t* widget, table_client_on_load_data_
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t table_client_set_on_create_row(widget_t* widget, table_client_on_create_row_t on_create_row,
-                                    void* ctx);
+                                     void* ctx);
 
 /**
  * @method table_client_get_virtual_h
@@ -268,6 +268,15 @@ ret_t table_client_scroll_to_row(widget_t* widget, int32_t row);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t table_client_scroll_to_yoffset(widget_t* widget, int32_t yoffset);
+
+/**
+ * @method table_client_ensure_children 
+ * 确保子控件已经创建。
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t table_client_ensure_children(widget_t* widget);
 
 /**
  * @method table_client_reload
