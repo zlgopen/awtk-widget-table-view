@@ -78,6 +78,9 @@ def saveUsesSdkInfo():
   content += '  }\n'
   content += '}'
 
+  if not os.path.exists(APP_BIN_DIR):
+    os.makedirs(APP_BIN_DIR)
+
   filename = os.path.join(APP_BIN_DIR, 'uses_sdk.json')
   if sys.version_info < (3, 0):
     with open(filename, 'w') as f:
@@ -156,9 +159,12 @@ os.environ['BUILD_SHARED'] = str(isBuildShared())
 print('BUILD_SHARED: ' + str(isBuildShared()))
 
 APP_LINKFLAGS=''
+
 CUSTOM_WIDGET_LIBS = []
 APP_LIBS = CUSTOM_WIDGET_LIBS + ['table_view']
-APP_CPPPATH=[os.path.join(APP_ROOT, 'src')]
+
+CUSTOM_WIDGET_CPPPATH = []
+APP_CPPPATH = CUSTOM_WIDGET_CPPPATH + [os.path.join(APP_ROOT, 'src')]
 
 APP_TOOLS = None
 if hasattr(awtk, 'TOOLS_NAME') and awtk.TOOLS_NAME != '' :
