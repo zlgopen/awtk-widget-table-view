@@ -8,6 +8,7 @@
 *.obj
 *.exe
 /bin
+*.pyc
 /lib
 .sconsign.dblite
 lua/demo1
