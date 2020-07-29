@@ -169,6 +169,8 @@ class Helper:
             APP_DEFAULT_LANGUAGE + '\\\" '
         APP_CCFLAGS = APP_CCFLAGS + ' -DAPP_DEFAULT_COUNTRY=\\\"' + \
             APP_DEFAULT_COUNTRY + '\\\" '
+        APP_CCFLAGS = APP_CCFLAGS + ' -DAPP_ROOT=\\\"' + \
+            self.APP_ROOT+ '\\\" '
         os.environ['BUILD_SHARED'] = str(self.isBuildShared())
 
         if GEN_IDL_DEF == 'true':
