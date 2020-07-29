@@ -1,7 +1,8 @@
-import os
+﻿import os
 import sys
 import platform
 import shutil
+import json
 
 
 def getAwtkRoot():
@@ -12,13 +13,14 @@ def getAwtkRoot():
       if os.path.exists(dirname):
         awtk_root = dirname
         break
-  return awtk_root
+  return os.path.abspath(awtk_root)
+
 
 def isBuildShared():
   return 'WITH_AWTK_SO' in os.environ and os.environ['WITH_AWTK_SO'] == 'true' and BUILD_SHARED == 'true'
 
 
-def copyAwtkDLL():
+def copyAwtkSharedLib():
   if awtk.OS_NAME == 'Darwin':
     src = os.path.join(AWTK_ROOT, 'bin/libawtk.dylib')
     dst = os.path.join(APP_BIN_DIR, 'libawtk.dylib')
@@ -40,17 +42,52 @@ def copyAwtkDLL():
     shutil.copy(src, dst)
 
 
-def genIdlAndDef(awtk_root):
-  idl_gen_tools = os.path.join(awtk_root, 'tools/idl_gen/index.js')
-  dll_def_gen_tools = os.path.join(awtk_root, 'tools/dll_def_gen/index.js')
+def genIdlAndDef():
+  idl_gen_tools = os.path.join(AWTK_ROOT, 'tools/idl_gen/index.js')
+  dll_def_gen_tools = os.path.join(AWTK_ROOT, 'tools/dll_def_gen/index.js')
 
-  cmd = 'node ' + idl_gen_tools + ' idl/idl.json ' + 'src'
+  cmd = 'node ' + '"' + idl_gen_tools + '"' + ' idl/idl.json ' + 'src'
   if os.system(cmd) != 0:
     print('exe cmd: ' + cmd + ' failed.')
 
-  cmd = 'node ' + dll_def_gen_tools + ' idl/idl.json ' + 'src/table_view.def'
+  cmd = 'node ' + '"' + dll_def_gen_tools + '"'  + ' idl/idl.json ' + 'src/table_view.def'
   if os.system(cmd) != 0 :
     print('exe cmd: ' + cmd + ' failed.')
+
+
+def saveUsesSdkInfo():
+  release_id = ''
+  filename = os.path.join(AWTK_ROOT, 'component.json')
+  if os.path.exists(filename):
+    with open(filename, 'r') as f:
+      component_content = f.read()
+      if len(component_content) > 0:
+        component_json = json.loads(component_content)
+        if 'release_id' in component_json:
+          release_id = component_json['release_id']
+          if sys.version_info < (3, 0):
+            release_id = release_id.encode('ascii')
+
+  content  = '{\n' 
+  content += '  "compileSDK": {\n'
+  content += '    "awtk": {\n'
+  content += '      "path": "' + AWTK_ROOT.replace('\\', '/') + '",\n'
+  content += '      "release_id": "' + release_id + '",\n'
+  content += '      "nanovg_backend": "' + awtk.NANOVG_BACKEND + '"\n'
+  content += '    }\n'
+  content += '  }\n'
+  content += '}'
+
+  if not os.path.exists(APP_BIN_DIR):
+    os.makedirs(APP_BIN_DIR)
+
+  filename = os.path.join(APP_BIN_DIR, 'uses_sdk.json')
+  if sys.version_info < (3, 0):
+    with open(filename, 'w') as f:
+      f.write(content)
+  else:
+    with open(filename, 'w', encoding='utf8') as f:
+      f.write(content)
 
 
 AWTK_ROOT = getAwtkRoot()
@@ -93,12 +130,18 @@ if len(LANGUAGE) > 0:
     APP_DEFAULT_COUNTRY = lan[1]
 
 SHARED = ARGUMENTS.get('SHARED', '')
-if len(SHARED) > 0 and SHARED.lower().startswith('f'):
-  BUILD_SHARED = 'false'
+if len(SHARED) > 0:
+  if SHARED.lower().startswith('t'):
+    BUILD_SHARED = 'true'
+  else:
+    BUILD_SHARED = 'false'
 
 IDL_DEF = ARGUMENTS.get('IDL_DEF', '')
-if len(IDL_DEF) > 0 and IDL_DEF.lower().startswith('f'):
-  GEN_IDL_DEF = 'false'
+if len(IDL_DEF) > 0:
+  if IDL_DEF.lower().startswith('t'):
+    GEN_IDL_DEF = 'true'
+  else:
+    GEN_IDL_DEF = 'false'
 
 APP_CPPPATH = []
 APP_CCFLAGS = ' -DLCD_WIDTH=' + LCD_WIDTH + ' -DLCD_HEIGHT=' + LCD_HEIGHT + ' ' 
@@ -122,9 +165,12 @@ os.environ['BUILD_SHARED'] = str(isBuildShared())
 print('BUILD_SHARED: ' + str(isBuildShared()))
 
 APP_LINKFLAGS=''
+
 CUSTOM_WIDGET_LIBS = []
 APP_LIBS = CUSTOM_WIDGET_LIBS + ['table_view']
-APP_CPPPATH=[os.path.join(APP_ROOT, 'src')]
+
+CUSTOM_WIDGET_CPPPATH = []
+APP_CPPPATH = CUSTOM_WIDGET_CPPPATH + [os.path.join(APP_ROOT, 'src')]
 
 APP_TOOLS = None
 if hasattr(awtk, 'TOOLS_NAME') and awtk.TOOLS_NAME != '' :
@@ -139,13 +185,15 @@ AWTK_LIBS = awtk.LIBS
 if isBuildShared():
   APP_LIBPATH = [APP_BIN_DIR, APP_LIB_DIR]
   AWTK_LIBS = awtk.SHARED_LIBS
-  copyAwtkDLL();
+  copyAwtkSharedLib()
 
   if awtk.OS_NAME == 'Linux':
     APP_LINKFLAGS += ' -Wl,-rpath=' + APP_BIN_DIR + ' '
 
 if GEN_IDL_DEF == 'true':
-  genIdlAndDef(AWTK_ROOT)
+  genIdlAndDef()
+
+saveUsesSdkInfo()
 
 if hasattr(awtk, 'CC'):
   DefaultEnvironment(
