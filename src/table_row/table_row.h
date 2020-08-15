@@ -44,20 +44,19 @@ BEGIN_C_DECLS
  * 如：
  *
  * ```xml
- *     <table_row children_layout="default(r=1,c=0,s=5,m=5)">
- *       <label name="name"  w="20%" h="100%" text="name" />
- *       <combo_box name="color" readonly="true" w="20%" h="80%" options="red;green;blue"/>
- *       <slider name="value" w="40%" h="80%" />
- *       <button name="remove" w="20%" h="80%" text="Remove" />
- *     </table_row>
+ * <!-- ui -->
+ * <table_row x="0" y="0" w="200" h="30"/>
  * ```
  *
  * 可用通过style来设置控件的显示风格，如背景颜色等。如：
  *
  * ```xml
- * <style name="default" border_color="#a0a0a0">
- *   <normal     bg_color="#f0f0f0" />
- * </style>
+ * <!-- style -->
+ * <table_row>
+ *   <style name="default" border_color="#d8d8d8" border="bottom">
+ *     <normal bg_color="#fcfcfc"/>
+ *   </style>
+ * </table_row>
  * ```
  */
 typedef struct _table_row_t {

@@ -40,20 +40,19 @@ BEGIN_C_DECLS
  * 在xml中使用"table\_header"标签创建table\_header。如：
  *
  * ```xml
- *   <table_header x="0"  y="0" w="-12" h="30" name="title" children_layout="default(r=1,c=0,s=5,m=5)">
- *     <label w="20%" text="Name" />
- *     <label w="20%" text="Color"/>
- *     <label w="40%" text="Value" />
- *     <label w="20%" text="Action" />
- *   </table_header>
+ * <!-- ui -->
+ * <table_header x="0" y="0" w="200" h="30"/>
  * ```
  *
  * 可用通过style来设置控件的显示风格，如背景颜色等。如：
  *
  * ```xml
- * <style name="default" border_color="#a0a0a0">
- *   <normal     bg_color="#f0f0f0" />
- * </style>
+ * <!-- style -->
+ * <table_header>
+ *   <style name="default">
+ *     <normal bg_color="#e0e0e0"/>
+ *   </style>
+ * </table_header>
  * ```
  */
 typedef struct _table_header_t {

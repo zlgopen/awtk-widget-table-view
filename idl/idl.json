@@ -15,6 +15,21 @@
     "level": 1
   },
   {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "获取支持的渲染模式。",
+    "name": "table_view_supported_render_mode",
+    "return": {
+      "type": "const char*",
+      "desc": "返回渲染模式。"
+    },
+    "type": "method",
+    "header": "src/table_view_register.h",
+    "level": 1
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -418,7 +433,7 @@
       }
     ],
     "header": "table_client/table_client.h",
-    "desc": "table\\_client。表示表格的数据区。\n\ntable\\_client\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于table\\_client\\_t控件。\n\n在xml中使用\"table\\_client\"标签创建table\\_client。\n\n一般放在table\\_client对象中放一个table\\_row即可，table\\_client以此为模版，根据需要创建table\\_row对象。\n\n如：\n\n```xml\n<table_client name=\"table_client\" x=\"0\"  y=\"30\" w=\"-12\" h=\"-30\" row_height=\"40\">\n<table_row children_layout=\"default(r=1,c=0,s=5,m=5)\">\n<label name=\"name\"  w=\"20%\" h=\"100%\" text=\"name\" />\n<combo_box name=\"color\" readonly=\"true\" w=\"20%\" h=\"80%\" options=\"red;green;blue\"/>\n<slider name=\"value\" w=\"40%\" h=\"80%\" />\n<button name=\"remove\" w=\"20%\" h=\"80%\" text=\"Remove\" />\n</table_row>\n</table_client>\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
+    "desc": "table\\_client。表示表格的数据区。\n\ntable\\_client\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于table\\_client\\_t控件。\n\n在xml中使用\"table\\_client\"标签创建table\\_client。\n\n一般放在table\\_client对象中放一个table\\_row即可，table\\_client以此为模版，根据需要创建table\\_row对象。\n\n如：\n\n```xml\n<!-- ui -->\n<table_client x=\"0\" y=\"0\" w=\"200\" h=\"200\"/>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<!-- style -->\n<table_client>\n<style name=\"default\">\n<normal />\n</style>\n</table_client>\n```",
     "name": "table_client_t",
     "parent": "widget_t",
     "annotation": {
@@ -493,7 +508,7 @@
     "events": [],
     "properties": [],
     "header": "table_header/table_header.h",
-    "desc": "table\\_header。一个简单的容器控件，用来放置表头中的子控件。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\ntable\\_header\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于table\\_header\\_t控件。\n\n在xml中使用\"table\\_header\"标签创建table\\_header。如：\n\n```xml\n<table_header x=\"0\"  y=\"0\" w=\"-12\" h=\"30\" name=\"title\" children_layout=\"default(r=1,c=0,s=5,m=5)\">\n<label w=\"20%\" text=\"Name\" />\n<label w=\"20%\" text=\"Color\"/>\n<label w=\"40%\" text=\"Value\" />\n<label w=\"20%\" text=\"Action\" />\n</table_header>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
+    "desc": "table\\_header。一个简单的容器控件，用来放置表头中的子控件。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\ntable\\_header\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于table\\_header\\_t控件。\n\n在xml中使用\"table\\_header\"标签创建table\\_header。如：\n\n```xml\n<!-- ui -->\n<table_header x=\"0\" y=\"0\" w=\"200\" h=\"30\"/>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<!-- style -->\n<table_header>\n<style name=\"default\">\n<normal bg_color=\"#e0e0e0\"/>\n</style>\n</table_header>\n```",
     "name": "table_header_t",
     "parent": "widget_t",
     "annotation": {
@@ -605,7 +620,7 @@
       }
     ],
     "header": "table_row/table_row.h",
-    "desc": "table\\_row。表示表格的一行。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\ntable\\_row\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于table\\_row\\_t控件。\n\n在xml中使用\"table\\_row\"标签创建table\\_row。\n\ntable\\_row一般放在table\\_client对象中，创建一个对象即可，table\\_client以此为模版，根据需要创建table\\_row对象。\n\n如：\n\n```xml\n<table_row children_layout=\"default(r=1,c=0,s=5,m=5)\">\n<label name=\"name\"  w=\"20%\" h=\"100%\" text=\"name\" />\n<combo_box name=\"color\" readonly=\"true\" w=\"20%\" h=\"80%\" options=\"red;green;blue\"/>\n<slider name=\"value\" w=\"40%\" h=\"80%\" />\n<button name=\"remove\" w=\"20%\" h=\"80%\" text=\"Remove\" />\n</table_row>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
+    "desc": "table\\_row。表示表格的一行。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\ntable\\_row\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于table\\_row\\_t控件。\n\n在xml中使用\"table\\_row\"标签创建table\\_row。\n\ntable\\_row一般放在table\\_client对象中，创建一个对象即可，table\\_client以此为模版，根据需要创建table\\_row对象。\n\n如：\n\n```xml\n<!-- ui -->\n<table_row x=\"0\" y=\"0\" w=\"200\" h=\"30\"/>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<!-- style -->\n<table_row>\n<style name=\"default\" border_color=\"#d8d8d8\" border=\"bottom\">\n<normal bg_color=\"#fcfcfc\"/>\n</style>\n</table_row>\n```",
     "name": "table_row_t",
     "parent": "widget_t",
     "annotation": {
@@ -680,7 +695,7 @@
     "events": [],
     "properties": [],
     "header": "table_view/table_view.h",
-    "desc": "表格视图。\n\ntable\\_view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于table\\_view\\_t控件。\n\n在xml中使用\"table\\_view\"标签创建table\\_view。\n\ntable\\_view中一般放table\\_header、table\\_client和滚动条控件。\n\ntable\\_header和滚动条为可选，table\\_client为必选。\n\n如：\n\n```xml\n<table_view x=\"10\" y=\"10\" w=\"-20\" h=\"-80\">\n<table_header x=\"0\"  y=\"0\" w=\"-12\" h=\"30\" name=\"title\" children_layout=\"default(r=1,c=0,s=5,m=5)\">\n<label w=\"20%\" text=\"Name\" />\n<label w=\"20%\" text=\"Color\"/>\n<label w=\"40%\" text=\"Value\" />\n<label w=\"20%\" text=\"Action\" />\n</table_header>\n\n<table_client name=\"table_client\" x=\"0\"  y=\"30\" w=\"-12\" h=\"-30\" row_height=\"40\">\n<table_row children_layout=\"default(r=1,c=0,s=5,m=5)\">\n<label name=\"name\"  w=\"20%\" h=\"100%\" text=\"name\" />\n<combo_box name=\"color\" readonly=\"true\" w=\"20%\" h=\"80%\" options=\"red;green;blue\"/>\n<slider name=\"value\" w=\"40%\" h=\"80%\" />\n<button name=\"remove\" w=\"20%\" h=\"80%\" text=\"Remove\" />\n</table_row>\n</table_client>\n<scroll_bar_d name=\"vbar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\n</table_view>>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
+    "desc": "表格视图。\n\ntable\\_view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于table\\_view\\_t控件。\n\n在xml中使用\"table\\_view\"标签创建table\\_view。\n\ntable\\_view中一般放table\\_header、table\\_client和滚动条控件。\n\ntable\\_header和滚动条为可选，table\\_client为必选。\n\n如：\n\n```xml\n<!-- ui -->\n<table_view x=\"10\" y=\"10\" w=\"200\" h=\"200\">\n<table_header x=\"0\" y=\"0\" w=\"-12\" h=\"30\" name=\"table_header\" children_layout=\"default(r=1,c=0,s=5,m=5)\">\n<label w=\"30%\" text=\"Name\"/>\n<label w=\"40%\" text=\"Value\"/>\n<label w=\"30%\" text=\"Action\"/>\n</table_header>\n\n<table_client name=\"table_client\" x=\"0\"  y=\"30\" w=\"-12\" h=\"-30\" row_height=\"40\" rows=\"1\">\n<table_row children_layout=\"default(r=1,c=0,s=5,m=5)\">\n<label name=\"name\"  w=\"30%\" h=\"100%\" text=\"name\"/>\n<edit name=\"value\" w=\"40%\" h=\"100%\"/>\n<button name=\"remove\" w=\"30%\" h=\"100%\" text=\"Remove\"/>\n</table_row>\n</table_client>\n<scroll_bar_d name=\"scroll_bar\" x=\"r\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\n</table_view>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<!-- style -->\n<table_header>\n<style name=\"default\">\n<normal bg_color=\"#e0e0e0\"/>\n</style>\n</table_header>\n<table_client>\n<style name=\"default\">\n<normal/>\n</style>\n</table_client>\n<table_row>\n<style name=\"default\" border_color=\"#d8d8d8\" border=\"bottom\">\n<normal bg_color=\"#fcfcfc\"/>\n</style>\n</table_row>\n<table_view>\n<style name=\"default\" border_color=\"#c2c2c2\">\n<normal bg_color=\"#f4f4f4\"/>\n</style>\n</table_view>\n```",
     "name": "table_view_t",
     "parent": "widget_t",
     "annotation": {

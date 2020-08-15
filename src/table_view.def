@@ -1,24 +1,25 @@
 LIBRARY   table_view
 EXPORTS
     table_view_register @1
-    table_client_create @2
-    table_client_cast @3
-    table_client_set_row_height @4
-    table_client_set_rows @5
-    table_client_set_yoffset @6
-    table_client_set_yslidable @7
-    table_client_set_yspeed_scale @8
-    table_client_set_on_load_data @9
-    table_client_set_on_create_row @10
-    table_client_get_virtual_h @11
-    table_client_scroll_to_row @12
-    table_client_scroll_to_yoffset @13
-    table_client_ensure_children @14
-    table_client_reload @15
-    table_header_create @16
-    table_header_cast @17
-    table_row_create @18
-    table_row_cast @19
-    table_row_set_index @20
-    table_view_create @21
-    table_view_cast @22
+    table_view_supported_render_mode @2
+    table_client_create @3
+    table_client_cast @4
+    table_client_set_row_height @5
+    table_client_set_rows @6
+    table_client_set_yoffset @7
+    table_client_set_yslidable @8
+    table_client_set_yspeed_scale @9
+    table_client_set_on_load_data @10
+    table_client_set_on_create_row @11
+    table_client_get_virtual_h @12
+    table_client_scroll_to_row @13
+    table_client_scroll_to_yoffset @14
+    table_client_ensure_children @15
+    table_client_reload @16
+    table_header_create @17
+    table_header_cast @18
+    table_row_create @19
+    table_row_cast @20
+    table_row_set_index @21
+    table_view_create @22
+    table_view_cast @23

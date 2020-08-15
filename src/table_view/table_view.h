@@ -42,32 +42,49 @@ BEGIN_C_DECLS
  * 如：
  *
  * ```xml
- * <table_view x="10" y="10" w="-20" h="-80">
- *   <table_header x="0"  y="0" w="-12" h="30" name="title" children_layout="default(r=1,c=0,s=5,m=5)">
- *     <label w="20%" text="Name" />
- *     <label w="20%" text="Color"/>
- *     <label w="40%" text="Value" />
- *     <label w="20%" text="Action" />
+ * <!-- ui -->
+ * <table_view x="10" y="10" w="200" h="200">
+ *   <table_header x="0" y="0" w="-12" h="30" name="table_header" children_layout="default(r=1,c=0,s=5,m=5)">
+ *     <label w="30%" text="Name"/>
+ *     <label w="40%" text="Value"/>
+ *     <label w="30%" text="Action"/>
  *   </table_header>
  *
- *   <table_client name="table_client" x="0"  y="30" w="-12" h="-30" row_height="40">
+ *   <table_client name="table_client" x="0"  y="30" w="-12" h="-30" row_height="40" rows="1">
  *     <table_row children_layout="default(r=1,c=0,s=5,m=5)">
- *       <label name="name"  w="20%" h="100%" text="name" />
- *       <combo_box name="color" readonly="true" w="20%" h="80%" options="red;green;blue"/>
- *       <slider name="value" w="40%" h="80%" />
- *       <button name="remove" w="20%" h="80%" text="Remove" />
+ *       <label name="name"  w="30%" h="100%" text="name"/>
+ *       <edit name="value" w="40%" h="100%"/>
+ *       <button name="remove" w="30%" h="100%" text="Remove"/>
  *     </table_row>
  *   </table_client>
- *   <scroll_bar_d name="vbar" x="right" y="0" w="12" h="100%" value="0"/>
- * </table_view>>
+ *   <scroll_bar_d name="scroll_bar" x="r" y="0" w="12" h="100%" value="0"/>
+ * </table_view>
  * ```
  *
  * 可用通过style来设置控件的显示风格，如背景颜色等。如：
  *
  * ```xml
- * <style name="default" border_color="#a0a0a0">
- *   <normal     bg_color="#f0f0f0" />
- * </style>
+ * <!-- style -->
+ * <table_header>
+ *   <style name="default">
+ *     <normal bg_color="#e0e0e0"/>
+ *   </style>
+ * </table_header>
+ * <table_client>
+ *   <style name="default">
+ *     <normal/>
+ *   </style>
+ * </table_client>
+ * <table_row>
+ *   <style name="default" border_color="#d8d8d8" border="bottom">
+ *     <normal bg_color="#fcfcfc"/>
+ *   </style>
+ * </table_row>
+ * <table_view>
+ *   <style name="default" border_color="#c2c2c2">
+ *     <normal bg_color="#f4f4f4"/>
+ *   </style>
+ * </table_view>
  * ```
  */
 typedef struct _table_view_t {

@@ -35,3 +35,7 @@ ret_t table_view_register(void) {
 
   return widget_factory_register(widget_factory(), WIDGET_TYPE_TABLE_VIEW, table_view_create);
 }
+
+const char* table_view_supported_render_mode(void) {
+  return "OpenGL|AGGE-BGR565|AGGE-BGRA8888|AGGE-MONO";
+}

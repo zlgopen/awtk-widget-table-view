@@ -36,6 +36,16 @@ BEGIN_C_DECLS
  */
 ret_t table_view_register(void);
 
+/**
+ * @method  table_view_supported_render_mode
+ * 获取支持的渲染模式。
+ *
+ * @annotation ["global"]
+ *
+ * @return {const char*} 返回渲染模式。
+ */
+const char* table_view_supported_render_mode(void);
+
 END_C_DECLS
 
 #endif /*TK_TABLE_VIEW_REGISTER_H*/
