@@ -208,11 +208,13 @@ static ret_t table_client_prepare_data(widget_t* widget) {
   for (i = 0; i < nr; i++) {
     uint32_t index = start_index + i;
     widget_t* iter = widget_get_child(widget, i);
+    event_t e = event_init(EVT_RESET, iter);
 
     iter->y = index * row_height;
     table_row_set_index(iter, index);
-    widget_set_visible(iter, TRUE, FALSE);
     widget_set_enable(iter, TRUE);
+    widget_set_visible(iter, TRUE, FALSE);
+    widget_dispatch_recursive(iter, &e);
 
     if (table_client->on_load_data != NULL) {
       table_client->on_load_data(table_client->on_load_data_ctx, index, iter);
