@@ -1,9 +1,14 @@
 ﻿import os
-import scripts.app_helper as app
+import scripts.awtk_locator as locator
 
-helper = app.Helper(ARGUMENTS);
+def getAppHelper(ARGUMENTS):
+    locator.init(ARGUMENTS)
+
+    from app_helper_base import AppHelperBase
+    return AppHelperBase(ARGUMENTS)
+
+helper = getAppHelper(ARGUMENTS)
 helper.set_dll_def('src/table_view.def').set_libs(['table_view']).call(DefaultEnvironment)
 
-CustomWidgetSConscriptFiles = []
-SConscriptFiles = CustomWidgetSConscriptFiles + ['src/SConscript', 'demos/SConscript', 'tests/SConscript']
+SConscriptFiles = ['src/SConscript', 'demos/SConscript', 'tests/SConscript']
 SConscript(SConscriptFiles)
