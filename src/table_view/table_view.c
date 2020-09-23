@@ -23,7 +23,7 @@
 #include "tkc/utils.h"
 #include "table_view.h"
 #include "scroll_view/scroll_bar.h"
-#include "table_client/table_client.h"
+#include "../table_client/table_client.h"
 
 static ret_t table_view_on_client_scrolled(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);

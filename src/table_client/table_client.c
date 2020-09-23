@@ -22,7 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "table_client.h"
-#include "table_row/table_row.h"
+#include "../table_row/table_row.h"
 #include "base/widget_vtable.h"
 #include "widget_animators/widget_animator_scroll.h"
 
