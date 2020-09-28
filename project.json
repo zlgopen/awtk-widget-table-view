@@ -7,8 +7,6 @@
   "desc": "表格视图。",
   "copyright": "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
   "type": "PROJECT_CUSTOM_WIDGET",
-  "appType": "APP_MOBILE",
-  "hardware": "RT1050",
   "entry": "main",
   "assets": {
     "activedTheme": "default",
@@ -39,6 +37,7 @@
   },
   "creator": {
     "name": "AWTK Designer",
-    "version": "0.1.5"
-  }
+    "version": "1.0.0"
+  },
+  "awtkRoot": "${DesignerPath}/SDK/awtk"
 }
