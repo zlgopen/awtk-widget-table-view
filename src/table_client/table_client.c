@@ -594,7 +594,7 @@ static widget_t* table_client_find_target(widget_t* widget, xy_t x, xy_t y) {
   return widget_find_target_default(widget, x, y);
 }
 
-static ret_t table_client_invalidate(widget_t* widget, rect_t* r) {
+static ret_t table_client_invalidate(widget_t* widget, const rect_t* r) {
   return widget_invalidate_default(widget, r);
 }
 
