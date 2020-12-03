@@ -10,7 +10,7 @@
     </table_header>
 
     <table_client name="table_client" x="0"  y="30" w="100%" h="-30" row_height="40">
-      <table_row children_layout="default(r=1,c=0,s=5,m=5)">
+      <table_row children_layout="default(r=1,c=0,s=5,m=5)" w="100%">
         <label name="index"  w="10%" h="100%" />
         <label name="name"  w="20%" h="100%" />
         <label name="chinese"  w="10%" h="100%" />
