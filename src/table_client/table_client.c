@@ -527,6 +527,14 @@ static ret_t table_client_on_event(widget_t* widget, event_t* e) {
       ret = table_client->dragged ? RET_STOP : RET_OK;
       break;
     }
+    case EVT_RESIZE:
+    case EVT_MOVE_RESIZE: {
+      if (widget_is_window_opened(widget)) {
+        table_client_ensure_children(widget);
+      }
+      break;
+    }
+    default:break;
   }
 
   return RET_OK;
