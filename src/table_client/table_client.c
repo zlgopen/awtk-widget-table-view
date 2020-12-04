@@ -324,10 +324,6 @@ ret_t table_client_scroll_to(widget_t* widget, int32_t yoffset_end, int32_t dura
   int32_t rows_per_page = table_client_rows_per_page(widget);
   return_value_if_fail(table_client != NULL, RET_FAIL);
 
-  if (yoffset_end == table_client->yoffset) {
-    return RET_OK;
-  }
-
   max_yoffset = table_client->row_height * (table_client->rows - rows_per_page);
   if (yoffset_end > max_yoffset) {
     yoffset_end = max_yoffset;
@@ -335,6 +331,10 @@ ret_t table_client_scroll_to(widget_t* widget, int32_t yoffset_end, int32_t dura
 
   if (yoffset_end < 0) {
     yoffset_end = 0;
+  }
+
+  if (yoffset_end == table_client->yoffset) {
+    return RET_OK;
   }
 
   yoffset = table_client->yoffset;
