@@ -57,7 +57,8 @@ BEGIN_C_DECLS
  *       <button name="remove" w="30%" h="100%" text="Remove"/>
  *     </table_row>
  *   </table_client>
- *   <scroll_bar_d name="scroll_bar" x="r" y="0" w="12" h="100%" value="0"/>
+ *   <scroll_bar_d name="scroll_bar" x="r" y="30" w="12" h="-30" value="0"/>
+ *   <color_tile name="color_tile" x="r" y="0" w="12" h="30" bg_color="#E0E0E0"/>
  * </table_view>
  * ```
  *
