@@ -50,15 +50,14 @@ BEGIN_C_DECLS
  *     <label w="30%" text="Action"/>
  *   </table_header>
  *
- *   <table_client name="table_client" x="0"  y="30" w="-12" h="-30" row_height="40" rows="1">
+ *   <table_client name="table_client" x="0"  y="30" w="-12" h="-30" row_height="40">
  *     <table_row children_layout="default(r=1,c=0,s=5,m=5)" w="100%">
  *       <label name="name"  w="30%" h="100%" text="name"/>
  *       <edit name="value" w="40%" h="100%"/>
  *       <button name="remove" w="30%" h="100%" text="Remove"/>
  *     </table_row>
  *   </table_client>
- *   <scroll_bar_d name="scroll_bar" x="r" y="30" w="12" h="-30" value="0"/>
- *   <color_tile name="color_tile" x="r" y="0" w="12" h="30" bg_color="#E0E0E0"/>
+ *   <scroll_bar_d name="scroll_bar" x="r" y="0" w="12" h="100%" value="0"/>
  * </table_view>
  * ```
  *
