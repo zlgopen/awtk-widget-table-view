@@ -541,7 +541,7 @@ static ret_t table_client_on_event(widget_t* widget, event_t* e) {
     default:break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 const char* s_table_client_properties[] = {
