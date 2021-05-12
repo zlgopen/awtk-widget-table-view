@@ -187,7 +187,10 @@ static ret_t table_client_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t table_client_layout_children(widget_t* widget) {
-  return table_client_ensure_children(widget);
+  if (widget_is_window_opened(widget)) {
+    table_client_ensure_children(widget);
+  }
+  return RET_OK;
 }
 
 static ret_t table_client_prepare_data(widget_t* widget) {
@@ -538,7 +541,8 @@ static ret_t table_client_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
-    default:break;
+    default:
+      break;
   }
 
   return ret;
