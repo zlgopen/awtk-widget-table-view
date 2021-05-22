@@ -286,6 +286,7 @@ ret_t table_client_ensure_children(widget_t* widget) {
   for (i = 0; i < nr; i++) {
     widget_t* iter = widget_get_child(widget, i);
     widget_move_resize(iter, 0, ih * i, iw, ih);
+    widget_layout(iter);
 
     if (table_client->on_create_row != NULL) {
       table_client->on_create_row(table_client->on_create_row_ctx, i, iter);
