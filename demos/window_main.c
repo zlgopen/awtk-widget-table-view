@@ -67,6 +67,7 @@ static ret_t on_load_data(void* ctx, uint32_t index, widget_t* row) {
   widget_set_text_utf8(widget_lookup(row, "name", TRUE), name);
   widget_set_value(widget_lookup(row, "value", TRUE),index%100);
   widget_set_value(widget_lookup(row, "color", TRUE), 0);
+  widget_use_style(row, index%2==0 ? "even" : "odd");
 
   return RET_OK;
 }
