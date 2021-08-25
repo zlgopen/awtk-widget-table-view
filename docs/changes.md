@@ -1,6 +1,10 @@
 # 最新动态
 
 2021/05/22
+  * 添加 table_client_set_on_prepare_row 接口，主要用于 MVVM 绑定。
+  * 完善 Demo。
+
+2021/05/22
   * fix table client layout
 
 2021/05/12
