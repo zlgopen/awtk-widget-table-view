@@ -244,9 +244,7 @@ static ret_t table_client_on_scroll(widget_t* widget) {
   table_client_t* table_client = TABLE_CLIENT(widget);
   int32_t vstart_index = table_client_get_vstart_index(widget);
   int32_t rows_per_page = table_client_rows_per_page(widget);
-  int32_t vend_index = vstart_index + rows_per_page;
   int32_t start_index = table_client->start_index;
-  int32_t end_index = start_index + PAGES_TO_LOAD * rows_per_page;
 
   start_index = vstart_index - rows_per_page;
   table_client->start_index = tk_max(0, start_index);
@@ -649,6 +647,15 @@ ret_t table_client_set_on_prepare_row(widget_t* widget,
   return RET_OK;
 }
 
+static ret_t table_client_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) {
+  table_client_t* table_client = TABLE_CLIENT(widget);
+  return_value_if_fail(table_client != NULL && out_x != NULL && out_y != NULL, RET_BAD_PARAMS);
+  *out_x = 0;
+  *out_y = table_client->yoffset;
+
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(table_client) = {.size = sizeof(table_client_t),
                                 .type = WIDGET_TYPE_TABLE_CLIENT,
                                 .scrollable = TRUE,
@@ -657,6 +664,7 @@ TK_DECL_VTABLE(table_client) = {.size = sizeof(table_client_t),
                                 .parent = TK_PARENT_VTABLE(widget),
                                 .create = table_client_create,
                                 .on_paint_self = table_client_on_paint_self,
+                                .get_offset = table_client_get_offset,
                                 .set_prop = table_client_set_prop,
                                 .get_prop = table_client_get_prop,
                                 .on_event = table_client_on_event,
