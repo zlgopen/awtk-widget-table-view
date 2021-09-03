@@ -146,7 +146,7 @@ ret_t application_init(void) {
   return_value_if_fail(tk_strlen(path) > 0, RET_NOT_FOUND);
 
   char* bin = strstr(path, "bin");
-  tk_strcpy(bin, "data\\scores.csv");
+  tk_strcpy(bin, "data/scores.csv");
 
   csv_file_t* csv = csv_file_create(path, ',');
   widget_t* client = widget_lookup(win, "table_client", TRUE);
