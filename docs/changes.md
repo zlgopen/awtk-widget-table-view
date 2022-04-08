@@ -1,5 +1,8 @@
 # 最新动态
 
+2022/04/08
+  * 修复table_client控件在子控件的取消指针按键事件返回RET_STOP时会设置滚动条的问题（感谢雨欣提供补丁）  
+
 2021/05/22
   * 添加 table_client_set_on_prepare_row 接口，主要用于 MVVM 绑定。
   * 完善 Demo。

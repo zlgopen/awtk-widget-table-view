@@ -486,21 +486,27 @@ static ret_t table_client_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
-    case EVT_POINTER_DOWN:
+    case EVT_POINTER_DOWN: {
       table_client->pressed = TRUE;
       table_client->dragged = FALSE;
       widget_grab(widget->parent, widget);
       table_client->first_move_after_down = TRUE;
       table_client_on_pointer_down(table_client, (pointer_event_t*)e);
       break;
-    case EVT_POINTER_DOWN_ABORT:
-      table_client_on_pointer_down_abort(table_client, (pointer_event_t*)e);
-      if (table_client->pressed) {
-        widget_ungrab(widget->parent, widget);
+    }
+    case EVT_POINTER_DOWN_ABORT: {
+      pointer_event_t evt = *(pointer_event_t*)e;
+      widget_t* target = widget_find_target(widget, evt.x, evt.y);
+      if (target == NULL || target->parent != widget) {
+        table_client_on_pointer_down_abort(table_client, (pointer_event_t*)e);
+        if (table_client->pressed) {
+          widget_ungrab(widget->parent, widget);
+        }
+        table_client->pressed = FALSE;
+        table_client->dragged = FALSE;
       }
-      table_client->pressed = FALSE;
-      table_client->dragged = FALSE;
       break;
+    }
     case EVT_POINTER_UP: {
       pointer_event_t* evt = (pointer_event_t*)e;
       if (table_client->pressed && table_client_is_dragged(widget, evt)) {
