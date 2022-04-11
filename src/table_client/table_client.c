@@ -499,12 +499,12 @@ static ret_t table_client_on_event(widget_t* widget, event_t* e) {
       widget_t* target = widget_find_target(widget, evt.x, evt.y);
       if (target == NULL || target->parent != widget) {
         table_client_on_pointer_down_abort(table_client, (pointer_event_t*)e);
-        if (table_client->pressed) {
-          widget_ungrab(widget->parent, widget);
-        }
-        table_client->pressed = FALSE;
-        table_client->dragged = FALSE;
       }
+      if (table_client->pressed) {
+        widget_ungrab(widget->parent, widget);
+      }
+      table_client->pressed = FALSE;
+      table_client->dragged = FALSE;
       break;
     }
     case EVT_POINTER_UP: {
