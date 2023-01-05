@@ -372,6 +372,16 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "获取 table_client 虚表。",
+        "name": "table_client_get_widget_vtable",
+        "return": {
+          "type": "const widget_vtable_t*",
+          "desc": "成功返回 table_client 虚表。"
+        }
       }
     ],
     "events": [
@@ -529,6 +539,16 @@
           "type": "widget_t*",
           "desc": "table_header对象。"
         }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "获取 table_header 虚表。",
+        "name": "table_header_get_widget_vtable",
+        "return": {
+          "type": "const widget_vtable_t*",
+          "desc": "成功返回 table_header 虚表。"
+        }
       }
     ],
     "events": [],
@@ -627,6 +647,16 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "获取 table_row 虚表。",
+        "name": "table_row_get_widget_vtable",
+        "return": {
+          "type": "const widget_vtable_t*",
+          "desc": "成功返回 table_row 虚表。"
+        }
       }
     ],
     "events": [],
@@ -715,6 +745,16 @@
         "return": {
           "type": "widget_t*",
           "desc": "table_view对象。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "获取 table_view 虚表。",
+        "name": "table_view_get_widget_vtable",
+        "return": {
+          "type": "const widget_vtable_t*",
+          "desc": "成功返回 table_view 虚表。"
         }
       }
     ],

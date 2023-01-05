@@ -17,10 +17,14 @@ EXPORTS
     table_client_scroll_to_yoffset
     table_client_ensure_children
     table_client_reload
+    table_client_get_widget_vtable
     table_header_create
     table_header_cast
+    table_header_get_widget_vtable
     table_row_create
     table_row_cast
     table_row_set_index
+    table_row_get_widget_vtable
     table_view_create
     table_view_cast
+    table_view_get_widget_vtable

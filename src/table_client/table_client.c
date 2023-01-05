@@ -216,7 +216,7 @@ static ret_t table_client_prepare_data(widget_t* widget) {
     widget_t* iter = widget_get_child(widget, i);
     event_t e = event_init(EVT_RESET, iter);
 
-    iter->y = index * row_height;
+    widget_move(iter, iter->x, index * row_height);
     table_row_set_index(iter, index);
     widget_set_enable(iter, TRUE);
     widget_set_visible(iter, TRUE, FALSE);
@@ -284,7 +284,7 @@ ret_t table_client_ensure_children(widget_t* widget) {
   nr = widget_count_children(widget);
   for (i = 0; i < nr; i++) {
     widget_t* iter = widget_get_child(widget, i);
-    widget_move_resize(iter, 0, ih * i, iw, ih);
+    widget_move_resize_ex(iter, 0, ih * i, iw, ih, FALSE);
     widget_layout(iter);
 
     if (table_client->on_create_row != NULL) {
