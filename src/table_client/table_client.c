@@ -464,7 +464,7 @@ static ret_t table_client_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_WHEEL: {
       wheel_event_t* evt = (wheel_event_t*)e;
-      int32_t delta = evt->dy > 0 ? row_height : -row_height;
+      int32_t delta = evt->dy > 0 ? -row_height : row_height;
       table_client_scroll_delta_to(widget, delta, TK_ANIMATING_TIME);
       ret = RET_STOP;
       break;
