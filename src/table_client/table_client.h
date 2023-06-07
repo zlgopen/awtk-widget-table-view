@@ -41,9 +41,9 @@ typedef ret_t (*table_client_on_prepare_row_t)(void* ctx, widget_t* client, uint
  * table\_client\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于table\_client\_t控件。
  *
  * 在xml中使用"table\_client"标签创建table\_client。
- * 
+ *
  * 一般放在table\_client对象中放一个table\_row即可，table\_client以此为模版，根据需要创建table\_row对象。
- * 
+ *
  * 如：
  *
  * ```xml
@@ -224,7 +224,7 @@ ret_t table_client_set_yspeed_scale(widget_t* widget, float_t yspeed_scale);
  * 设置 加载数据的回调函数。
  * @param {widget_t*} widget widget对象。
  * @param {table_client_on_load_data_t} on_load_data 回调函数。
- * @param {void*} ctx 回调函数的上下文。 
+ * @param {void*} ctx 回调函数的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -236,7 +236,7 @@ ret_t table_client_set_on_load_data(widget_t* widget, table_client_on_load_data_
  * 设置 创建行时的回调函数，在回调函数中可以注册控件的事件。
  * @param {widget_t*} widget widget对象。
  * @param {table_client_on_create_row_t} on_create_row 回调函数。
- * @param {void*} ctx 回调函数的上下文。 
+ * @param {void*} ctx 回调函数的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -248,7 +248,7 @@ ret_t table_client_set_on_create_row(widget_t* widget, table_client_on_create_ro
  * 设置 预处理行（创建行）的回调函数，在回调函数中可以创建行控件。
  * @param {widget_t*} widget widget对象。
  * @param {table_client_on_prepare_row_t} on_prepare_row 回调函数。
- * @param {void*} ctx 回调函数的上下文。 
+ * @param {void*} ctx 回调函数的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -258,6 +258,7 @@ ret_t table_client_set_on_prepare_row(widget_t* widget,
 /**
  * @method table_client_get_virtual_h
  * 获取虚拟高度。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  *
  * @return {int64_t} 返回虚拟高度。
@@ -267,6 +268,7 @@ int64_t table_client_get_virtual_h(widget_t* widget);
 /**
  * @method table_client_scroll_to_row
  * 滚动到指定行。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  * @param {int32_t} row 行号。
  *
@@ -277,6 +279,7 @@ ret_t table_client_scroll_to_row(widget_t* widget, int32_t row);
 /**
  * @method table_client_scroll_to_yoffset
  * 滚动到指定偏移位置。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  * @param {int32_t} yoffset 偏移量。
  *
@@ -285,8 +288,9 @@ ret_t table_client_scroll_to_row(widget_t* widget, int32_t row);
 ret_t table_client_scroll_to_yoffset(widget_t* widget, int32_t yoffset);
 
 /**
- * @method table_client_ensure_children 
+ * @method table_client_ensure_children
  * 确保子控件已经创建。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -296,6 +300,7 @@ ret_t table_client_ensure_children(widget_t* widget);
 /**
  * @method table_client_reload
  * 数据变化时让table client重新加载数据。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
