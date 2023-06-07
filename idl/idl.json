@@ -291,7 +291,9 @@
             "desc": "widget对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取虚拟高度。",
         "name": "table_client_get_virtual_h",
         "return": {
@@ -312,7 +314,9 @@
             "desc": "行号。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "滚动到指定行。",
         "name": "table_client_scroll_to_row",
         "return": {
@@ -333,7 +337,9 @@
             "desc": "偏移量。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "滚动到指定偏移位置。",
         "name": "table_client_scroll_to_yoffset",
         "return": {
@@ -349,7 +355,9 @@
             "desc": "widget对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "确保子控件已经创建。",
         "name": "table_client_ensure_children",
         "return": {
@@ -365,7 +373,9 @@
             "desc": "widget对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "数据变化时让table client重新加载数据。",
         "name": "table_client_reload",
         "return": {
