@@ -3,6 +3,8 @@
 #include "table_row/table_row.h"
 #include "table_client/table_client.h"
 
+#define WIDGET_PROP_SELECT_INDEX "select_index"
+
 static ret_t on_quit(void* ctx, event_t* e) {
   tk_quit();
 
@@ -11,7 +13,7 @@ static ret_t on_quit(void* ctx, event_t* e) {
 
 static table_row_t* table_row_of(widget_t* child) {
   widget_t* iter = child;
-  while(iter != NULL && !tk_str_eq(widget_get_type(iter), WIDGET_TYPE_TABLE_ROW)) {
+  while (iter != NULL && !tk_str_eq(widget_get_type(iter), WIDGET_TYPE_TABLE_ROW)) {
     iter = iter->parent;
   }
 
@@ -52,7 +54,25 @@ static ret_t on_rows_clicked(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_row_select(void* ctx, event_t* e) {
+  char name[32];
+  uint32_t index;
+  widget_t* client = WIDGET(ctx);
+  widget_t* row = WIDGET(e->target);
+  widget_t* label = widget_lookup(row, "name", TRUE);
+
+  widget_get_text_utf8(label, name, sizeof(name));
+  tk_sscanf(name, "name:%u", &index);
+  widget_set_prop_int(client, WIDGET_PROP_SELECT_INDEX, (int32_t)index);
+  table_client_reload(client);
+
+  return RET_OK;
+}
+
 static ret_t on_create_row(void* ctx, uint32_t index, widget_t* row) {
+  widget_t* client = WIDGET(ctx);
+
+  widget_on(row, EVT_POINTER_UP, on_row_select, ctx);
   widget_child_on(row, "value", EVT_VALUE_CHANGED, on_value_changed, NULL);
   widget_child_on(row, "color", EVT_VALUE_CHANGED, on_color_changed, NULL);
   widget_child_on(row, "remove", EVT_CLICK, on_remove_clicked, NULL);
@@ -62,12 +82,19 @@ static ret_t on_create_row(void* ctx, uint32_t index, widget_t* row) {
 
 static ret_t on_load_data(void* ctx, uint32_t index, widget_t* row) {
   char name[32];
+  int32_t select_index;
+  const char* row_style = NULL;
+  widget_t* client = WIDGET(ctx);
   tk_snprintf(name, sizeof(name), "name:%u", index);
 
   widget_set_text_utf8(widget_lookup(row, "name", TRUE), name);
-  widget_set_value(widget_lookup(row, "value", TRUE),index%100);
+  widget_set_value(widget_lookup(row, "value", TRUE), index % 100);
   widget_set_value(widget_lookup(row, "color", TRUE), 0);
-  widget_use_style(row, index%2==0 ? "even" : "odd");
+  widget_use_style(row, index % 2 == 0 ? "even" : "odd");
+
+  select_index = widget_get_prop_int(client, WIDGET_PROP_SELECT_INDEX, -1);
+  row_style = index == select_index ? "select" : index % 2 == 0 ? "even" : "odd";
+  widget_use_style(row, row_style);
 
   return RET_OK;
 }
@@ -81,12 +108,12 @@ ret_t application_init(void) {
   widget_t* win = window_open("main");
   widget_t* client = widget_lookup(win, "table_client", TRUE);
 
-  widget_child_on(win, "quit", EVT_CLICK, on_quit, NULL); 
-  widget_child_on(win, "0", EVT_CLICK, on_rows_clicked, client); 
-  widget_child_on(win, "10", EVT_CLICK, on_rows_clicked, client); 
-  widget_child_on(win, "100", EVT_CLICK, on_rows_clicked, client); 
-  widget_child_on(win, "10000000", EVT_CLICK, on_rows_clicked, client); 
-  widget_child_on(win, "50000000", EVT_CLICK, on_rows_clicked, client); 
+  widget_child_on(win, "quit", EVT_CLICK, on_quit, NULL);
+  widget_child_on(win, "0", EVT_CLICK, on_rows_clicked, client);
+  widget_child_on(win, "10", EVT_CLICK, on_rows_clicked, client);
+  widget_child_on(win, "100", EVT_CLICK, on_rows_clicked, client);
+  widget_child_on(win, "10000000", EVT_CLICK, on_rows_clicked, client);
+  widget_child_on(win, "50000000", EVT_CLICK, on_rows_clicked, client);
 
   table_client_set_on_load_data(client, on_load_data, client);
   table_client_set_on_create_row(client, on_create_row, client);

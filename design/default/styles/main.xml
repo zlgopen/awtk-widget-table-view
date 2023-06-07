@@ -16,4 +16,7 @@
   <style name="even">
     <normal bg_color="#f0f0f0" />
   </style>
+  <style name="select">
+    <normal bg_color="#00b0f0" />
+  </style>
 </table_row>
