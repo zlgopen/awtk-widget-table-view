@@ -58,7 +58,7 @@ static ret_t table_view_on_scroll_bar_changed(void* ctx, event_t* e) {
   scroll_bar_t* bar = SCROLL_BAR(target);
   int64_t value = bar->value;
   int64_t virtual_h = bar->virtual_size;
-  double scale = (virtual_h - target->h) / (double)virtual_h;
+  double scale = (virtual_h - client->h) / (double)virtual_h;
 
   emitter_disable(client->emitter);
   table_client_set_yoffset(client, value * scale);
