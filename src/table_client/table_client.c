@@ -31,6 +31,16 @@
 
 static ret_t table_client_on_scroll(widget_t* widget);
 
+static ret_t table_client_reset_load_data_idle(widget_t* widget) {
+  table_client_t* table_client = TABLE_CLIENT(widget);
+
+  if (table_client->load_data_idle_id != TK_INVALID_ID) {
+    idle_remove(table_client->load_data_idle_id);
+    table_client->load_data_idle_id = TK_INVALID_ID;
+  }
+  return RET_OK;
+}
+
 static int32_t table_client_rows_per_page(widget_t* widget) {
   table_client_t* table_client = TABLE_CLIENT(widget);
   return_value_if_fail(table_client != NULL && table_client->row_height > 0, 1);
@@ -182,7 +192,7 @@ static ret_t table_client_set_prop(widget_t* widget, const char* name, const val
 static ret_t table_client_on_destroy(widget_t* widget) {
   table_client_t* table_client = TABLE_CLIENT(widget);
   return_value_if_fail(widget != NULL && table_client != NULL, RET_BAD_PARAMS);
-
+  table_client_reset_load_data_idle(widget);
   return RET_OK;
 }
 
@@ -236,6 +246,27 @@ static ret_t table_client_prepare_data(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t table_client_on_idle_prepare_data(const idle_info_t* idle) {
+  widget_t* widget = WIDGET(idle->ctx);
+  table_client_t* table_client = TABLE_CLIENT(widget);
+  return_value_if_fail(table_client != NULL, RET_BAD_PARAMS);
+
+  table_client_prepare_data(widget);
+  table_client->load_data_idle_id = TK_INVALID_ID;
+  return RET_OK;
+}
+
+static ret_t table_client_prepare_data_async(widget_t* widget) {
+  table_client_t* table_client = TABLE_CLIENT(widget);
+  return_value_if_fail(table_client != NULL, RET_BAD_PARAMS);
+
+  if (table_client->load_data_idle_id == TK_INVALID_ID) {
+    table_client->load_data_idle_id = idle_add(table_client_on_idle_prepare_data, widget);
+  }
+
+  return RET_OK;
+}
+
 ret_t table_client_reload(widget_t* widget) {
   return table_client_prepare_data(widget);
 }
@@ -248,7 +279,7 @@ static ret_t table_client_on_scroll(widget_t* widget) {
 
   start_index = vstart_index - rows_per_page;
   table_client->start_index = tk_max(0, start_index);
-  table_client_prepare_data(widget);
+  table_client_prepare_data_async(widget);
 
   return RET_OK;
 }
@@ -625,6 +656,7 @@ ret_t table_client_set_on_load_data(widget_t* widget, table_client_on_load_data_
   table_client_t* table_client = TABLE_CLIENT(widget);
   return_value_if_fail(table_client != NULL, RET_BAD_PARAMS);
 
+  table_client_reset_load_data_idle(widget);
   table_client->on_load_data_ctx = ctx;
   table_client->on_load_data = on_load_data;
 

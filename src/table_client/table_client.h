@@ -123,6 +123,8 @@ typedef struct _table_client_t {
   /*预处理行（创建行）的回调函数，可以注册事件处理函数*/
   void* on_prepare_row_ctx;
   table_client_on_prepare_row_t on_prepare_row;
+
+  uint32_t load_data_idle_id;
 } table_client_t;
 
 /**
