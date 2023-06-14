@@ -42,10 +42,14 @@ static ret_t table_client_reset_load_data_idle(widget_t* widget) {
 }
 
 static int32_t table_client_rows_per_page(widget_t* widget) {
+  int32_t rows = 1;
   table_client_t* table_client = TABLE_CLIENT(widget);
   return_value_if_fail(table_client != NULL && table_client->row_height > 0, 1);
 
-  return widget->h / table_client->row_height;
+  if (widget->h > 0) {
+    rows = widget->h / table_client->row_height;
+  }
+  return tk_max(rows, 1);
 }
 
 /*get the index of the first visible row*/
