@@ -66,13 +66,12 @@ static ret_t on_row_select(void* ctx, event_t* e) {
   widget_set_prop_int(client, WIDGET_PROP_SELECT_INDEX, (int32_t)index);
   table_client_reload(client);
 
+  log_debug("CLICKED: name=%s\n", name);
   return RET_OK;
 }
 
 static ret_t on_create_row(void* ctx, uint32_t index, widget_t* row) {
-  widget_t* client = WIDGET(ctx);
-
-  widget_on(row, EVT_POINTER_UP, on_row_select, ctx);
+  widget_on(row, EVT_CLICK, on_row_select, ctx);
   widget_child_on(row, "value", EVT_VALUE_CHANGED, on_value_changed, NULL);
   widget_child_on(row, "color", EVT_VALUE_CHANGED, on_color_changed, NULL);
   widget_child_on(row, "remove", EVT_CLICK, on_remove_clicked, NULL);

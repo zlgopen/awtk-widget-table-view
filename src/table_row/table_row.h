@@ -69,7 +69,14 @@ typedef struct _table_row_t {
    */
   uint32_t index;
 
+  /*private*/
+  point_t down;
 } table_row_t;
+
+/**
+ * @event {pointer_event_t} EVT_CLICK
+ * 点击事件。
+ */
 
 /**
  * @method table_row_create

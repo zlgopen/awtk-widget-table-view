@@ -56,6 +56,37 @@ static ret_t table_row_set_prop(widget_t* widget, const char* name, const value_
   return RET_NOT_FOUND;
 }
 
+static ret_t table_row_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
+  uint16_t type = e->type;
+  table_row_t* table_row = TABLE_ROW(widget);
+  return_value_if_fail(table_row != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  switch (type) {
+    case EVT_POINTER_DOWN: {
+      pointer_event_t* evt = pointer_event_cast(e);
+      table_row->down.x = evt->x;
+      table_row->down.y = evt->y;
+      break;
+    }
+    case EVT_POINTER_UP: {
+      pointer_event_t* evt = pointer_event_cast(e);
+      int dx = tk_abs(table_row->down.x - evt->x);
+      int dy = tk_abs(table_row->down.y - evt->y);
+
+      if (dx < 3 && dy < 3) {
+        pointer_event_t click;
+        pointer_event_init(&click, EVT_CLICK, widget, evt->x, evt->y);
+        widget_dispatch(widget, (event_t*)(&click));
+      }
+      break;
+    }
+    default:
+      break;
+  }
+
+  return RET_OK;
+}
 const char* s_table_row_properties[] = {TABLE_ROW_PROP_INDEX, NULL};
 
 TK_DECL_VTABLE(table_row) = {.size = sizeof(table_row_t),
@@ -64,6 +95,7 @@ TK_DECL_VTABLE(table_row) = {.size = sizeof(table_row_t),
                              .persistent_properties = s_table_row_properties,
                              .parent = TK_PARENT_VTABLE(widget),
                              .create = table_row_create,
+                             .on_event = table_row_on_event,
                              .set_prop = table_row_set_prop,
                              .get_prop = table_row_get_prop};
 

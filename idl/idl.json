@@ -669,7 +669,13 @@
         }
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "EVT_CLICK",
+        "desc": "点击事件。",
+        "type": "pointer_event_t"
+      }
+    ],
     "properties": [
       {
         "name": "index",
