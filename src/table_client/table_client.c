@@ -233,6 +233,7 @@ static ret_t table_client_prepare_data(widget_t* widget) {
     widget_move(iter, iter->x, index * row_height);
     table_row_set_index(iter, index);
     widget_set_enable(iter, TRUE);
+    widget_set_sensitive(iter, TRUE);
     widget_set_visible(iter, TRUE, FALSE);
     widget_dispatch_recursive(iter, &e);
 
@@ -245,6 +246,7 @@ static ret_t table_client_prepare_data(widget_t* widget) {
     widget_t* iter = widget_get_child(widget, i);
     widget_set_visible(iter, FALSE, FALSE);
     widget_set_enable(iter, FALSE);
+    widget_set_sensitive(iter, FALSE);
   }
 
   return RET_OK;
