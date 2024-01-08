@@ -47,7 +47,7 @@ static int32_t table_client_rows_per_page(widget_t* widget) {
   return_value_if_fail(table_client != NULL && table_client->row_height > 0, 1);
 
   if (widget->h > 0) {
-    rows = ceil(widget->h / table_client->row_height);
+    rows = ceil((double)widget->h / table_client->row_height);
   }
   return tk_max(rows, 1);
 }
