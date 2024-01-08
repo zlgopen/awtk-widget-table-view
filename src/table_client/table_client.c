@@ -47,7 +47,7 @@ static int32_t table_client_rows_per_page(widget_t* widget) {
   return_value_if_fail(table_client != NULL && table_client->row_height > 0, 1);
 
   if (widget->h > 0) {
-    rows = widget->h / table_client->row_height;
+    rows = ceil(widget->h / table_client->row_height);
   }
   return tk_max(rows, 1);
 }
@@ -310,6 +310,7 @@ ret_t table_client_ensure_children(widget_t* widget) {
     return_value_if_fail(twidget != NULL, RET_BAD_PARAMS);
 
     if (nr <= widget_count_children(widget)) {
+      widget_dispatch_simple_event(widget, EVT_SCROLL);
       return RET_OK;
     }
 
