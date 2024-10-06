@@ -15,10 +15,12 @@
         <button name="remove" w="20%" h="80%" text="Remove" />
       </table_row>
     </table_client>
+    <scroll_bar_d name="hbar" x="0" y="b" w="-12" h="12" value="0"/>
     <scroll_bar_d name="vbar" x="right" y="30" w="12" h="-30" value="0"/>
   </table_view>
-  <view x="10" y="b:10" w="-20" h="40" children_layout="default(r=1,c=6,s=5,m=5)">
+  <view x="10" y="b:10" w="-20" h="40" children_layout="default(r=1,c=7,s=5,m=5)">
     <button name="0" text="0" />
+    <button name="1" text="1" />
     <button name="10" text="10" />
     <button name="100" text="100" />
     <button name="10000000" text="10000000" />

@@ -73,6 +73,24 @@ ret_t table_client_set_row_height(widget_t* widget, uint32_t row_height) {
   return RET_OK;
 }
 
+static ret_t table_client_set_yoffset_ex(widget_t* widget, int32_t yoffset, bool_t force) {
+  table_client_t* table_client = TABLE_CLIENT(widget);
+  return_value_if_fail(table_client != NULL, RET_BAD_PARAMS);
+
+  if (table_client->yoffset != yoffset || force) {
+    table_client->yoffset = yoffset;
+    table_client_on_scroll(widget);
+    widget_dispatch_simple_event(widget, EVT_SCROLL);
+    widget_invalidate_force(widget, NULL);
+  }
+
+  return RET_OK;
+}
+
+ret_t table_client_set_yoffset(widget_t* widget, int32_t yoffset) {
+  return table_client_set_yoffset_ex(widget, yoffset, FALSE);
+}
+
 ret_t table_client_set_rows(widget_t* widget, uint32_t rows) {
   int32_t yoffset = 0;
   int32_t rows_per_page = 0;
@@ -88,28 +106,12 @@ ret_t table_client_set_rows(widget_t* widget, uint32_t rows) {
 
   rows_per_page = table_client_rows_per_page(widget);
   yoffset = table_client_get_virtual_h(widget);
-  if (table_client->yoffset + table_client->row_height * rows_per_page >= yoffset) {
+  if ((table_client->yoffset + table_client->row_height * rows_per_page) >= yoffset) {
     yoffset = yoffset - widget->h;
-    table_client_set_yoffset(widget, yoffset);
   } else {
-    table_client_on_scroll(widget);
-    widget_dispatch_simple_event(widget, EVT_SCROLL);
-    widget_invalidate_force(widget, NULL);
+    yoffset = table_client->yoffset; 
   }
-
-  return RET_OK;
-}
-
-ret_t table_client_set_yoffset(widget_t* widget, int32_t yoffset) {
-  table_client_t* table_client = TABLE_CLIENT(widget);
-  return_value_if_fail(table_client != NULL, RET_BAD_PARAMS);
-
-  if (table_client->yoffset != yoffset) {
-    table_client->yoffset = yoffset;
-    table_client_on_scroll(widget);
-    widget_dispatch_simple_event(widget, EVT_SCROLL);
-    widget_invalidate_force(widget, NULL);
-  }
+  table_client_set_yoffset_ex(widget, yoffset, TRUE);
 
   return RET_OK;
 }

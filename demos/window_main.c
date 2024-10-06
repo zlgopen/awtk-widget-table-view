@@ -109,6 +109,7 @@ ret_t application_init(void) {
 
   widget_child_on(win, "quit", EVT_CLICK, on_quit, NULL);
   widget_child_on(win, "0", EVT_CLICK, on_rows_clicked, client);
+  widget_child_on(win, "1", EVT_CLICK, on_rows_clicked, client);
   widget_child_on(win, "10", EVT_CLICK, on_rows_clicked, client);
   widget_child_on(win, "100", EVT_CLICK, on_rows_clicked, client);
   widget_child_on(win, "10000000", EVT_CLICK, on_rows_clicked, client);
