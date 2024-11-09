@@ -112,6 +112,7 @@ ret_t table_client_set_rows(widget_t* widget, uint32_t rows) {
     yoffset = table_client->yoffset; 
   }
   table_client_set_yoffset_ex(widget, yoffset, TRUE);
+  table_client_reload(widget);
 
   return RET_OK;
 }
@@ -206,7 +207,7 @@ static ret_t table_client_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t table_client_prepare_data(widget_t* widget) {
+static ret_t table_client_prepare_data(widget_t* widget, bool_t force) {
   table_client_t* table_client = TABLE_CLIENT(widget);
 
   int32_t i = 0;
@@ -231,6 +232,10 @@ static ret_t table_client_prepare_data(widget_t* widget) {
     uint32_t index = start_index + i;
     widget_t* iter = widget_get_child(widget, i);
     event_t e = event_init(EVT_RESET, iter);
+
+    if (TABLE_ROW(iter)->index == index && !force) {
+      continue;
+    }
 
     widget_move(iter, iter->x, index * row_height);
     table_row_set_index(iter, index);
@@ -259,7 +264,7 @@ static ret_t table_client_on_idle_prepare_data(const idle_info_t* idle) {
   table_client_t* table_client = TABLE_CLIENT(widget);
   return_value_if_fail(table_client != NULL, RET_BAD_PARAMS);
 
-  table_client_prepare_data(widget);
+  table_client_prepare_data(widget, FALSE);
   table_client->load_data_idle_id = TK_INVALID_ID;
   return RET_OK;
 }
@@ -276,7 +281,7 @@ static ret_t table_client_prepare_data_async(widget_t* widget) {
 }
 
 ret_t table_client_reload(widget_t* widget) {
-  return table_client_prepare_data(widget);
+  return table_client_prepare_data(widget, TRUE);
 }
 
 static ret_t table_client_on_scroll(widget_t* widget) {
@@ -332,7 +337,7 @@ ret_t table_client_ensure_children(widget_t* widget) {
     }
   }
 
-  table_client_prepare_data(widget);
+  table_client_prepare_data(widget, TRUE);
   widget_dispatch_simple_event(widget, EVT_SCROLL);
 
   return RET_OK;
