@@ -1,5 +1,8 @@
 # 最新动态
 
+2024/11/29
+  * 修复table_view高度变化时如果先resize table_client再resize scroll_bar会导致scroll_bar的虚高大于实际需要的问题。 (感谢朝泽提供补丁）
+
 2024/10/09
   * 优化数据加载。
 
