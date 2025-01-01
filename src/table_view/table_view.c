@@ -67,12 +67,27 @@ static ret_t table_view_on_scroll_bar_changed(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t table_view_on_scroll_bar_resized(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  table_view_t* table_view = TABLE_VIEW(widget);
+  widget_t* client = table_view->client;
+
+  if (client != NULL) {
+    widget_dispatch_simple_event(client, EVT_SCROLL);
+    widget_invalidate_force(client, NULL);
+  }
+
+  return RET_OK;
+}
+
 ret_t table_view_on_add_child(widget_t* widget, widget_t* child) {
   table_view_t* table_view = TABLE_VIEW(widget);
   const char* type = widget_get_type(child);
 
   if (tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_MOBILE) ||
       tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_DESKTOP)) {
+    widget_on(child, EVT_RESIZE, table_view_on_scroll_bar_resized, widget);
+    widget_on(child, EVT_MOVE_RESIZE, table_view_on_scroll_bar_resized, widget);
     widget_on(child, EVT_VALUE_CHANGING, table_view_on_scroll_bar_changed, widget);
     widget_on(child, EVT_VALUE_CHANGED, table_view_on_scroll_bar_changed, widget);
     table_view->vbar = child;
