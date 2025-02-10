@@ -109,7 +109,7 @@ ret_t table_client_set_rows(widget_t* widget, uint32_t rows) {
   if ((table_client->yoffset + table_client->row_height * rows_per_page) >= yoffset) {
     yoffset = yoffset - widget->h;
   } else {
-    yoffset = table_client->yoffset; 
+    yoffset = table_client->yoffset;
   }
   table_client_set_yoffset_ex(widget, yoffset, TRUE);
   table_client_reload(widget);
@@ -226,7 +226,6 @@ static ret_t table_client_prepare_data(widget_t* widget, bool_t force) {
 
   nr = tk_min(nr, table_client->rows);
   nr = tk_min(nr, widget_count_children(widget));
-  max_rows_to_load = tk_min(max_rows_to_load, widget_count_children(widget));
 
   for (i = 0; i < nr; i++) {
     uint32_t index = start_index + i;
@@ -249,7 +248,8 @@ static ret_t table_client_prepare_data(widget_t* widget, bool_t force) {
     }
   }
 
-  for (; i < max_rows_to_load; i++) {
+  nr = widget_count_children(widget);
+  for (; i < nr; i++) {
     widget_t* iter = widget_get_child(widget, i);
     widget_set_visible(iter, FALSE, FALSE);
     widget_set_enable(iter, FALSE);
@@ -304,24 +304,25 @@ ret_t table_client_ensure_children(widget_t* widget) {
   uint32_t nr = 0;
   table_client_t* table_client = TABLE_CLIENT(widget);
   int32_t rows_per_page = table_client_rows_per_page(widget);
+  int32_t max_rows_to_load = PAGES_TO_LOAD * rows_per_page;
   return_value_if_fail(table_client->row_height > 0, RET_BAD_PARAMS);
 
   iw = widget->w;
   ih = table_client->row_height;
-  nr = PAGES_TO_LOAD * rows_per_page;
 
   if (table_client->on_prepare_row != NULL) {
-    table_client->on_prepare_row(table_client->on_prepare_row_ctx, widget, nr);
+    table_client->on_prepare_row(table_client->on_prepare_row_ctx, widget, max_rows_to_load);
   } else {
     widget_t* twidget = widget_get_child(widget, 0);
     return_value_if_fail(twidget != NULL, RET_BAD_PARAMS);
 
-    if (nr <= widget_count_children(widget)) {
+    nr = widget_count_children(widget);
+    if (max_rows_to_load <= nr) {
       widget_dispatch_simple_event(widget, EVT_SCROLL);
       return RET_OK;
     }
 
-    for (i = 0; i < nr - 1; i++) {
+    for (i = nr; i < max_rows_to_load - 1; i++) {
       ENSURE(widget_clone(twidget, widget) != NULL);
     }
   }

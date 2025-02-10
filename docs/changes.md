@@ -1,5 +1,8 @@
 # 最新动态
 
+2025/02/10
+  * 修复调整了table_view控件大小后，可能出现部分列表项无法选中的问题(感谢培煌提供补丁)
+
 2024/11/29
   * 修复table_view高度变化时如果先resize table_client再resize scroll_bar会导致scroll_bar的虚高大于实际需要的问题。 (感谢朝泽提供补丁）
 
