@@ -750,7 +750,15 @@ int64_t table_client_get_virtual_h(widget_t* widget) {
   table_client_t* table_client = TABLE_CLIENT(widget);
   return_value_if_fail(table_client != NULL, 1);
 
-  virtual_h = table_client->rows * table_client->row_height;
+  children_layouter_t* layouter = widget->children_layout;
+  if (layouter != NULL) {
+    int32_t y_margin = children_layouter_get_param_int(layouter, "y", 0);
+    int32_t spacing = children_layouter_get_param_int(layouter, "s", 0);
+
+    virtual_h += y_margin * 2;
+    virtual_h += (table_client->rows - 1) * spacing;
+  }
+  virtual_h += table_client->rows * table_client->row_height;
 
   return tk_max(virtual_h, widget->h);
 }
