@@ -64,7 +64,7 @@ typedef struct _table_row_t {
 
   /**
    * @property {uint32_t} index
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","scriptable"]
    * 行的编号。
    */
   uint32_t index;
