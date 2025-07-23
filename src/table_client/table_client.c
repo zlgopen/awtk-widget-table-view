@@ -73,7 +73,7 @@ ret_t table_client_set_row_height(widget_t* widget, uint32_t row_height) {
   return RET_OK;
 }
 
-static ret_t table_client_set_yoffset_ex(widget_t* widget, int32_t yoffset, bool_t force) {
+ret_t table_client_set_yoffset_ex(widget_t* widget, int32_t yoffset, bool_t force) {
   table_client_t* table_client = TABLE_CLIENT(widget);
   return_value_if_fail(table_client != NULL, RET_BAD_PARAMS);
 
@@ -232,7 +232,8 @@ static ret_t table_client_prepare_data(widget_t* widget, bool_t force) {
     widget_t* iter = widget_get_child(widget, i);
     event_t e = event_init(EVT_RESET, iter);
 
-    if (TABLE_ROW(iter)->index == index && !force) {
+    if (TABLE_ROW(iter)->index == index && !force && iter->enable && iter->visible &&
+        iter->sensitive) {
       continue;
     }
 

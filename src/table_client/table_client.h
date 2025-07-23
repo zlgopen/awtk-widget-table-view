@@ -200,6 +200,18 @@ ret_t table_client_set_rows(widget_t* widget, uint32_t rows);
 ret_t table_client_set_yoffset(widget_t* widget, int32_t yoffset);
 
 /**
+ * @method table_client_set_yoffset_ex
+ * 设置 偏移量。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {int32_t} yoffset 偏移量。
+ * @param {bool_t} force 是否强制设置。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t table_client_set_yoffset_ex(widget_t* widget, int32_t yoffset, bool_t force);
+
+/**
  * @method table_client_set_yslidable
  * 设置 是否允许y方向滑动。
  * @annotation ["scriptable"]

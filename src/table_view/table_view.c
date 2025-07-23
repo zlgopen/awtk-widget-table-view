@@ -52,17 +52,19 @@ static ret_t table_view_on_client_scrolled(void* ctx, event_t* e) {
 
 static ret_t table_view_on_scroll_bar_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
-  widget_t* target = WIDGET(e->target);
   table_view_t* table_view = TABLE_VIEW(widget);
   widget_t* client = table_view->client;
-  scroll_bar_t* bar = SCROLL_BAR(target);
-  int64_t value = bar->value;
-  int64_t virtual_h = bar->virtual_size;
-  double scale = (virtual_h - client->h) / (double)virtual_h;
 
-  emitter_disable(client->emitter);
-  table_client_set_yoffset(client, value * scale);
-  emitter_enable(client->emitter);
+  if (client != NULL) {
+    scroll_bar_t* bar = SCROLL_BAR(e->target);
+    int64_t value = bar->value;
+    int64_t virtual_h = bar->virtual_size;
+    double scale = (virtual_h - client->h) / (double)virtual_h;
+
+    emitter_disable(client->emitter);
+    table_client_set_yoffset(client, value * scale);
+    emitter_enable(client->emitter);
+  }
 
   return RET_OK;
 }
@@ -73,8 +75,12 @@ static ret_t table_view_on_scroll_bar_resized(void* ctx, event_t* e) {
   widget_t* client = table_view->client;
 
   if (client != NULL) {
-    widget_dispatch_simple_event(client, EVT_SCROLL);
-    widget_invalidate_force(client, NULL);
+    scroll_bar_t* bar = SCROLL_BAR(e->target);
+    int64_t value = bar->value;
+    int64_t virtual_h = bar->virtual_size;
+    double scale = (virtual_h - client->h) / (double)virtual_h;
+
+    table_client_set_yoffset_ex(client, value * scale, TRUE);
   }
 
   return RET_OK;
