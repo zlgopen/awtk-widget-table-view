@@ -378,7 +378,7 @@ ret_t table_client_scroll_to(widget_t* widget, int32_t yoffset_end, int32_t dura
   int32_t rows_per_page = table_client_rows_per_page(widget);
   return_value_if_fail(table_client != NULL, RET_FAIL);
 
-  max_yoffset = table_client->row_height * (table_client->rows - rows_per_page);
+  max_yoffset = table_client_get_virtual_h(widget) - widget->h;
   if (yoffset_end > max_yoffset) {
     yoffset_end = max_yoffset;
   }
