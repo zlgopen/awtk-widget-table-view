@@ -78,9 +78,11 @@ static ret_t table_view_on_scroll_bar_resized(void* ctx, event_t* e) {
     scroll_bar_t* bar = SCROLL_BAR(e->target);
     int64_t value = bar->value;
     int64_t virtual_h = bar->virtual_size;
-    double scale = (virtual_h - client->h) / (double)virtual_h;
 
-    table_client_set_yoffset_ex(client, value * scale, TRUE);
+    if (virtual_h > 0) {
+      double scale = (virtual_h - client->h) / (double)virtual_h;
+      table_client_set_yoffset_ex(client, value * scale, TRUE);
+    }
   }
 
   return RET_OK;
