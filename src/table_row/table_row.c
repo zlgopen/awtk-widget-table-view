@@ -23,6 +23,8 @@
 #include "tkc/utils.h"
 #include "table_row.h"
 #include "base/widget_vtable.h"
+#include "base/layout.h"
+#include "../table_header/table_header.h"
 
 ret_t table_row_set_index(widget_t* widget, uint32_t index) {
   table_row_t* table_row = TABLE_ROW(widget);
@@ -87,6 +89,38 @@ static ret_t table_row_on_event(widget_t* widget, event_t* e) {
 
   return RET_OK;
 }
+
+static widget_t* table_row_try_find_table_header(widget_t* widget) {
+  widget_t* client = widget->parent;
+  widget_t* view = client->parent;
+  widget_t* header = NULL;
+  if (view != NULL) {
+    header = widget_lookup_by_type(view, WIDGET_TYPE_TABLE_HEADER, FALSE);
+  }
+
+  return header;
+}
+
+static ret_t table_row_on_layout_children(widget_t* widget) {
+  table_row_t* row = TABLE_ROW(widget);
+  table_header_t* header = TABLE_HEADER(table_row_try_find_table_header(widget));
+
+  if (header != NULL && header->enable_cell_drag_resize) {
+    widget_t* cell = NULL;
+
+    WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, j)
+    cell = table_header_get_cell(WIDGET(header), j);
+    if (cell != NULL) {
+      widget_move_resize(iter, cell->x, cell->y, cell->w, widget->h);
+      widget_layout(iter);
+    }
+    WIDGET_FOR_EACH_CHILD_END()
+    return RET_OK;
+  } else {
+    return widget_layout_children_default(widget);
+  }
+}
+
 const char* s_table_row_properties[] = {TABLE_ROW_PROP_INDEX, NULL};
 
 TK_DECL_VTABLE(table_row) = {.size = sizeof(table_row_t),
@@ -97,7 +131,8 @@ TK_DECL_VTABLE(table_row) = {.size = sizeof(table_row_t),
                              .create = table_row_create,
                              .on_event = table_row_on_event,
                              .set_prop = table_row_set_prop,
-                             .get_prop = table_row_get_prop};
+                             .get_prop = table_row_get_prop,
+                             .on_layout_children = table_row_on_layout_children};
 
 widget_t* table_row_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(table_row), x, y, w, h);

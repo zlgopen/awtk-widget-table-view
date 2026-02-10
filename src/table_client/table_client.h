@@ -80,6 +80,13 @@ typedef struct _table_client_t {
   uint32_t rows;
 
   /**
+   * @property {int32_t} xoffset
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 偏移量。
+   */
+  int32_t xoffset;
+
+  /**
    * @property {int32_t} yoffset
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 偏移量。
@@ -189,6 +196,17 @@ ret_t table_client_set_row_height(widget_t* widget, uint32_t row_height);
 ret_t table_client_set_rows(widget_t* widget, uint32_t rows);
 
 /**
+ * @method table_client_set_xoffset
+ * 设置 偏移量。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {int32_t} yoffset 偏移量。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t table_client_set_xoffset(widget_t* widget, int32_t xoffset);
+
+/**
  * @method table_client_set_yoffset
  * 设置 偏移量。
  * @annotation ["scriptable"]
@@ -270,6 +288,16 @@ ret_t table_client_set_on_prepare_row(widget_t* widget,
                                       table_client_on_prepare_row_t on_prepare_row, void* ctx);
 
 /**
+ * @method table_client_get_virtual_w
+ * 获取虚拟高度。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {int64_t} 返回虚拟高度。
+ */
+int64_t table_client_get_virtual_w(widget_t* widget);
+
+/**
  * @method table_client_get_virtual_h
  * 获取虚拟高度。
  * @annotation ["scriptable"]
@@ -320,6 +348,17 @@ ret_t table_client_ensure_children(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t table_client_reload(widget_t* widget);
+
+/**
+ * @method table_client_relayout_row
+ * 重新布局row控件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {widget_t*} header 表头控件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t table_client_relayout_row(widget_t* widget, widget_t* header);
 
 #define TABLE_CLIENT_PROP_ROWS "rows"
 #define TABLE_CLIENT_PROP_YOFFSET "yoffset"

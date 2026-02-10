@@ -23,6 +23,7 @@
 #include "tkc/utils.h"
 #include "table_client.h"
 #include "../table_row/table_row.h"
+#include "../table_header/table_header.h"
 #include "base/widget_vtable.h"
 #include "widget_animators/widget_animator_scroll.h"
 
@@ -81,6 +82,18 @@ ret_t table_client_set_yoffset_ex(widget_t* widget, int32_t yoffset, bool_t forc
     table_client->yoffset = yoffset;
     table_client_on_scroll(widget);
     widget_dispatch_simple_event(widget, EVT_SCROLL);
+    widget_invalidate_force(widget, NULL);
+  }
+
+  return RET_OK;
+}
+
+ret_t table_client_set_xoffset(widget_t* widget, int32_t offset) {
+  table_client_t* table_client = TABLE_CLIENT(widget);
+  return_value_if_fail(table_client != NULL, RET_BAD_PARAMS);
+
+  if (table_client->xoffset != offset) {
+    table_client->xoffset = offset;
     widget_invalidate_force(widget, NULL);
   }
 
@@ -634,9 +647,10 @@ static ret_t table_client_on_paint_children(widget_t* widget, canvas_t* c) {
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   table_client_t* table_client = TABLE_CLIENT(widget);
   rect_t r = rect_init(c->ox, c->oy, widget->w, widget->h);
+  int32_t xoffset = -table_client->xoffset;
   int32_t yoffset = -table_client->yoffset;
 
-  canvas_translate(c, 0, yoffset);
+  canvas_translate(c, xoffset, yoffset);
   canvas_get_clip_rect(c, &r_save);
 
   r = rect_intersect(&r, &r_save);
@@ -649,7 +663,7 @@ static ret_t table_client_on_paint_children(widget_t* widget, canvas_t* c) {
   canvas_set_clip_rect(c, &r);
   table_client_paint_children(widget, c);
   canvas_set_clip_rect(c, &r_save);
-  canvas_untranslate(c, 0, yoffset);
+  canvas_untranslate(c, xoffset, yoffset);
 
   if (vg != NULL) {
     vgcanvas_clip_rect(vg, (float_t)r_save.x, (float_t)r_save.y, (float_t)r_save.w,
@@ -704,7 +718,7 @@ ret_t table_client_set_on_prepare_row(widget_t* widget,
 static ret_t table_client_get_offset(widget_t* widget, xy_t* out_x, xy_t* out_y) {
   table_client_t* table_client = TABLE_CLIENT(widget);
   return_value_if_fail(table_client != NULL && out_x != NULL && out_y != NULL, RET_BAD_PARAMS);
-  *out_x = 0;
+  *out_x = table_client->xoffset;
   *out_y = table_client->yoffset;
 
   return RET_OK;
@@ -736,6 +750,8 @@ widget_t* table_client_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
   table_client->row_height = 40;
   table_client->yslidable = TRUE;
   table_client->yspeed_scale = 1;
+  table_client->xoffset = 0;
+  table_client->yoffset = 0;
 
   return widget;
 }
@@ -746,6 +762,28 @@ widget_t* table_client_cast(widget_t* widget) {
   return widget;
 }
 
+int64_t table_client_get_virtual_w(widget_t* widget) {
+  widget_t* child = NULL;
+  int64_t virtual_w = 0;
+  table_client_t* table_client = TABLE_CLIENT(widget);
+  return_value_if_fail(table_client != NULL, 1);
+
+  children_layouter_t* layouter = widget->children_layout;
+  if (layouter != NULL) {
+    int32_t y_margin = children_layouter_get_param_int(layouter, "x", 0);
+    int32_t spacing = children_layouter_get_param_int(layouter, "s", 0);
+    virtual_w += y_margin * 2;
+    virtual_w += (table_client->rows - 1) * spacing;
+  }
+
+  child = widget_get_child(widget, 0);
+  if (child != NULL) {
+    virtual_w += child->w;
+  }
+
+  return tk_max(virtual_w, widget->w);
+}
+
 int64_t table_client_get_virtual_h(widget_t* widget) {
   int64_t virtual_h = 0;
   table_client_t* table_client = TABLE_CLIENT(widget);
@@ -754,4 +792,27 @@ int64_t table_client_get_virtual_h(widget_t* widget) {
   virtual_h = table_client->rows * table_client->row_height;
 
   return tk_max(virtual_h, widget->h);
+}
+
+ret_t table_client_relayout_row(widget_t* widget, widget_t* _header) {
+  table_header_t* header = TABLE_HEADER(_header);
+  table_client_t* client = TABLE_CLIENT(widget);
+  uint32_t i = 0;
+  wh_t iw = 0;
+  wh_t ih = 0;
+  uint32_t nr = 0;
+  widget_t* row = NULL;
+  widget_t* col = NULL;
+  return_value_if_fail(header != NULL && client != NULL, RET_BAD_PARAMS);
+
+  iw = table_header_get_virtual_size(_header);
+  ih = client->row_height;
+  nr = widget_count_children(widget);
+
+  for (i = 0; i < nr; i++) {
+    row = widget_get_child(widget, i);
+    widget_resize(row, iw, ih);
+  }
+
+  return RET_OK;
 }

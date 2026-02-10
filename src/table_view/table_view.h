@@ -34,11 +34,11 @@ BEGIN_C_DECLS
  * table\_view\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于table\_view\_t控件。
  *
  * 在xml中使用"table\_view"标签创建table\_view。
- * 
+ *
  * table\_view中一般放table\_header、table\_client和滚动条控件。
- * 
+ *
  * table\_header和滚动条为可选，table\_client为必选。
- * 
+ *
  * 如：
  *
  * ```xml
@@ -91,8 +91,10 @@ typedef struct _table_view_t {
   widget_t widget;
 
   /*private*/
+  widget_t* header;
   widget_t* client;
   widget_t* vbar;
+  widget_t* hbar;
 } table_view_t;
 
 /**

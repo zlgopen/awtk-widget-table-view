@@ -38,9 +38,9 @@ BEGIN_C_DECLS
  * table\_row\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于table\_row\_t控件。
  *
  * 在xml中使用"table\_row"标签创建table\_row。
- * 
+ *
  * table\_row一般放在table\_client对象中，创建一个对象即可，table\_client以此为模版，根据需要创建table\_row对象。
- * 
+ *
  * 如：
  *
  * ```xml
