@@ -29,8 +29,8 @@
 static ret_t table_view_on_client_scrolled(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   table_view_t* table_view = TABLE_VIEW(widget);
-  table_client_t* client = TABLE_CLIENT(table_view->client);
-  table_header_t* header = TABLE_HEADER(table_view->header);
+  table_client_t* client = table_view->client != NULL ? TABLE_CLIENT(table_view->client) : NULL;
+  table_header_t* header = table_view->header != NULL ? TABLE_HEADER(table_view->header) : NULL;
   widget_t* vbar = table_view->vbar;
   widget_t* hbar = table_view->hbar;
 
@@ -179,9 +179,9 @@ ret_t table_view_on_add_child(widget_t* widget, widget_t* child) {
     widget_on(child, EVT_SCROLL, table_view_on_client_scrolled, widget);
   } else if (tk_str_eq(type, WIDGET_TYPE_TABLE_HEADER)) {
     table_view->header = child;
-    widget_on(child, EVT_TABLE_HEADER_CELL_DRAG_RESIZING, table_view_on_header_col_changing, widget);
+    widget_on(child, EVT_TABLE_HEADER_CELL_DRAG_RESIZING, table_view_on_header_col_changing,
+              widget);
     widget_on(child, EVT_TABLE_HEADER_CELL_DRAG_RESIZED, table_view_on_header_col_changing, widget);
-
   }
 
   return RET_FAIL;
